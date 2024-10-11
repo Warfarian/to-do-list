@@ -1,0 +1,8 @@
+.sidebar{
+    display: flex;
+    justify-content: start;
+}
+
+li{
+    list-style: none;
+}
