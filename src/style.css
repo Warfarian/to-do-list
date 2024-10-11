@@ -1,8 +1,54 @@
+:root {
+    --bg-color: #f9f9f9;
+    --text-color: #333333;
+    --completed-color: #a8e6cf;
+    --pending-color: #d1e8e2;
+    --overdue-color: #ff8b94;
+    --accent-color: #ffeaa7;
+  }
+
+*{
+    padding: 0;
+    margin: 0;
+}
+
+body{
+    font-family: 'Kanit';
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.wrapper{
+    display: flex;
+}
+
+.welcome{
+    display: flex;
+    justify-content: center;
+    padding: 65px;
+    font-size: 150px;
+}
+h4{
+    font-size: 25px;
+    cursor: pointer;
+}
 .sidebar{
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
+    font-size: large;
+    font-weight: 300;
+    line-height: 3;
+    background-color: #2c3e50;
+    color: white;
+    padding: 45px;
+    width: 250px;
+    height: 1100px;
+}
+
+ul{
+    list-style-type: none;
 }
 
 li{
-    list-style: none;
+    cursor: pointer;
 }
