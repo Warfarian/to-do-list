@@ -22,26 +22,27 @@
         <div class="listArea"> 
             <!-- this is where we're adding stuff to dom -->
         </div>
-        <dialog id="modal">
+        <dialog id="popup">
             <h1>Hi!</h1>
-            <form action="">
+            <form method="dialog">
                 <label for="title">Task: </label>
-                <input type="text" name="title" id="title">
+                <input type="text" name="title" id="title" placeholder="Walk my dawg">
                 <label for="desc">Description: </label>
-                <input type="text" name="desc" id="desc">
-                <label for="priority">priority level: </label>
+                <input type="text" name="desc" id="desc" placeholder="Walk around the park">
+                <label for="priority">Priority level: </label>
                 <select name="priority" id="priority">
-                    <option value="Urgent"></option>
-                    <option value="High"></option>
-                    <option value="Low"></option>
+                    <option value="Urgent">Urgent</option>
+                    <option value="High">High</option>
+                    <option value="Low">Low</option>
                 </select>
                 <label for="dueDate">Due-Date: </label>
                 <input type="date" name="dueDate" id="dueDate">
                 <label for="notes">Notes: </label>
-                <input type="textarea" name="notes" id="notes">
+                <textarea name="notes" id="notes"></textarea>
+                <input type="submit" name="submit" id="submit">
+                <button type="button" onclick="document.getElementById('popup').close();">Cancel</button>   
             </form>
         </dialog>
-
     </div>
 </body>
 </html>

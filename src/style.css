@@ -20,12 +20,18 @@ body{
 
 .wrapper{
     display: flex;
+    flex-direction: row; /* Stacks items vertically */
+    align-items: center; /* Centers items horizontally */
+    justify-content: flex-start; /* Centers items vertically */
+    height: 100vh; /* Full height of the viewport */
 }
 
 .welcome{
     display: flex;
-    justify-content: center;
-    padding: 65px;
+    text-align: center;
+    margin-bottom: auto;
+    position: relative;
+    padding: 25px;
     font-size: 150px;
 }
 h4{
@@ -42,7 +48,7 @@ h4{
     color: white;
     padding: 45px;
     width: 250px;
-    height: 1100px;
+    height: 100vh;
 }
 
 ul{
@@ -51,4 +57,124 @@ ul{
 
 li{
     cursor: pointer;
+}
+
+.newTaskBtn {
+    padding: 10px 20px ;
+    justify-content: center;
+    font-size: 16px;
+    position: relative;
+    bottom: 475px;
+    right: 690px;
+    cursor: pointer;
+    margin-top: auto;
+    display: flex;
+    border-radius: 8px;
+    background-color: #2c3e50;
+    color: white;
+    font-weight: 700;
+}
+
+.newTaskBtn:hover{
+    background-color: #1a242f ;
+    transition: ease-in-out .5s;
+}
+
+dialog {
+    border: none; /* Remove default border */
+    border-radius: 8px; /* Rounded corners */
+    padding: 20px; /* Inner spacing */
+    width: 300px; /* Set a width for the modal */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Shadow effect */
+    background-color: white; /* Background color */
+    z-index: 1000; /* Ensure the dialog appears above other elements */
+    position: relative; /* Required for absolute positioning of close button */
+    font-weight: 700;
+}
+
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5); /* Dimmed background */
+}
+
+dialog form {
+    display: flex;
+    flex-direction: column; /* Arrange form elements in a column */
+    font-weight: 700;
+}
+
+dialog input[type="text"] {
+    padding: 10px; /* Inner spacing for input */
+    margin-bottom: 10px; /* Spacing between input and button */
+    border: 1px solid #ccc; /* Border for input */
+    border-radius: 4px; /* Rounded corners */   
+}
+
+dialog button {
+    padding: 10px; /* Inner spacing for buttons */
+    border: none; /* Remove default border */
+    border-radius: 4px; /* Rounded corners */
+    background-color: #2c3e50; /* Button background color */
+    color: white; /* Button text color */
+    font-size: 16px; /* Font size for buttons */
+    cursor: pointer; /* Pointer on hover */
+    transition: background-color 0.3s; /* Smooth background transition */
+    margin: 10px;
+    font-weight: 700;
+    font-family: 'Kanit';
+}
+
+dialog input[type = "text"]::placeholder{
+    font-family: 'Kanit';
+}
+
+dialog button:hover {
+    background-color: #1a242f; /* Darker shade on hover */
+}
+
+#submit{
+    padding: 10px; /* Inner spacing for buttons */
+    border: none; /* Remove default border */
+    border-radius: 4px; /* Rounded corners */
+    background-color: #2c3e50; /* Button background color */
+    color: white; /* Button text color */
+    font-size: 16px; /* Font size for buttons */
+    cursor: pointer; /* Pointer on hover */
+    transition: background-color 0.3s; /* Smooth background transition */
+    margin: 10px;
+    font-weight: 700;
+    font-family: 'Kanit';
+}
+
+#submit:hover{
+    background-color: #1a242f;
+}
+
+input#notes{
+    padding: 10px; /* Inner spacing for input */
+    margin-bottom: 10px; /* Spacing between input and button */
+    border: 1px solid #ccc; /* Border for input */
+    border-radius: 4px; /* Rounded corners */ 
+    margin: 10px;
+}
+
+select#priority{
+    padding: 10px; /* Inner spacing for input */
+    margin-bottom: 10px; /* Spacing between input and button */
+    border: 1px solid #ccc; /* Border for input */
+    border-radius: 4px; /* Rounded corners */ 
+    margin: 10px;
+}
+
+input#dueDate{
+    padding: 8px; /* Inner spacing for input */
+    margin-bottom: 10px; /* Spacing between input and button */
+    border: 1px solid #ccc; /* Border for input */
+    border-radius: 4px; /* Rounded corners */ 
+    margin: 10px;
+}
+
+h1{
+    padding: 8px; /* Inner spacing for input */
+    margin-bottom: 10px; 
+    margin: 10px;
 }
