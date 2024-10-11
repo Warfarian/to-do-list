@@ -1,4 +1,3 @@
-// webpack.config.js
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
@@ -22,16 +21,11 @@ module.exports = {
         use: ["style-loader", "css-loader"],
       },
       {
-        test: /\.svg$/,
-        use: [
-          {
-            loader: '@svgr/webpack',
-            options: {
-              svgo: false, // Optional: disables optimization if you encounter issues
-            },
-          },
-          'file-loader',
-        ],
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/[hash][ext][query]', // Output path for images
+        },
       },
     ],
   },

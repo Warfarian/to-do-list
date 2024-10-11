@@ -5,79 +5,92 @@
     --pending-color: #d1e8e2;
     --overdue-color: #ff8b94;
     --accent-color: #ffeaa7;
-  }
-
-*{
-    padding: 0;
-    margin: 0;
 }
 
-body{
-    font-family: 'Kanit';
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box; /* Ensures padding and margin are included in element's total width/height */
+}
+
+body {
+    font-family: 'Kanit', sans-serif; /* Fallback font added */
     background-color: var(--bg-color);
     color: var(--text-color);
 }
 
-.wrapper{
+.wrapper {
     display: flex;
-    flex-direction: row; /* Stacks items vertically */
-    align-items: center; /* Centers items horizontally */
-    justify-content: flex-start; /* Centers items vertically */
+    flex-direction: row; /* Stacks items horizontally */
     height: 100vh; /* Full height of the viewport */
 }
 
-.welcome{
+.sidebar {
     display: flex;
-    text-align: center;
-    margin-bottom: auto;
-    position: relative;
-    padding: 25px;
-    font-size: 150px;
-}
-h4{
-    font-size: 25px;
-    cursor: pointer;
-}
-.sidebar{
-    display: flex;
+    flex-direction: column; /* Stack sidebar items vertically */
     justify-content: flex-start;
     font-size: large;
     font-weight: 300;
-    line-height: 3;
+    line-height: 1.5; /* More reasonable line height for readability */
     background-color: #2c3e50;
     color: white;
     padding: 45px;
-    width: 250px;
-    height: 100vh;
+    width: 250px; /* Fixed width for sidebar */
+    height: 100vh; /* Full height of the sidebar */
 }
 
-ul{
-    list-style-type: none;
+h4 {
+    font-size: 25px;
+    margin-bottom: 20px; /* Space below heading */
 }
 
-li{
+ul {
+    list-style-type: none; /* Remove bullet points */
+}
+
+li {
     cursor: pointer;
+    margin-bottom: 10px; /* Space between items */
+    transition: color 0.3s; /* Smooth color transition on hover */
 }
 
-.newTaskBtn {
-    padding: 10px 20px ;
-    justify-content: center;
-    font-size: 16px;
+li:hover {
+    color: var(--accent-color); /* Change color on hover */
+}
+
+.listArea {
     position: relative;
-    bottom: 475px;
-    right: 690px;
-    cursor: pointer;
-    margin-top: auto;
-    display: flex;
-    border-radius: 8px;
-    background-color: #2c3e50;
-    color: white;
-    font-weight: 700;
+    top: 150px; /* Adjust position based on sidebar */
+    padding: 20px; /* Inner spacing for list area */
+    flex: 1; /* Allow the list area to grow */
 }
 
-.newTaskBtn:hover{
-    background-color: #1a242f ;
-    transition: ease-in-out .5s;
+.list-item {
+    background-color: var(--pending-color); /* Use a variable for colors */
+    margin: 10px auto; /* Center the list item and add vertical spacing */
+    padding: 20px 10px; /* Space inside the item (20px top/bottom, 10px left/right) */
+    display: flex; /* Enables flexbox layout */
+    justify-content: space-between; /* Space items evenly */
+    align-items: center; /* Center items vertically */
+    border-radius: 8px; /* Rounded corners for list items */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow effect */
+}
+
+.delete {
+    background-color: red; /* Red background for delete button */
+    font-weight: 900;
+    border: none; /* Remove border */
+    width: 30px; /* Adjust width for delete button */
+    height: 30px; /* Adjust height for delete button */
+    text-align: center; /* Center text in button */
+    color: white; /* Text color for delete button */
+    border-radius: 50%; /* Make button circular */
+    cursor: pointer; /* Pointer on hover */
+    transition: background-color 0.3s; /* Smooth background transition */
+}
+
+.delete:hover {
+    background-color: darkred; /* Darker shade on hover */
 }
 
 dialog {
@@ -99,17 +112,20 @@ dialog::backdrop {
 dialog form {
     display: flex;
     flex-direction: column; /* Arrange form elements in a column */
-    font-weight: 700;
 }
 
-dialog input[type="text"] {
+dialog input[type="text"],
+dialog input[type="date"],
+dialog select,
+dialog textarea {
     padding: 10px; /* Inner spacing for input */
     margin-bottom: 10px; /* Spacing between input and button */
     border: 1px solid #ccc; /* Border for input */
-    border-radius: 4px; /* Rounded corners */   
+    border-radius: 4px; /* Rounded corners */
 }
 
-dialog button {
+dialog button,
+#submit {
     padding: 10px; /* Inner spacing for buttons */
     border: none; /* Remove default border */
     border-radius: 4px; /* Rounded corners */
@@ -118,63 +134,57 @@ dialog button {
     font-size: 16px; /* Font size for buttons */
     cursor: pointer; /* Pointer on hover */
     transition: background-color 0.3s; /* Smooth background transition */
-    margin: 10px;
-    font-weight: 700;
-    font-family: 'Kanit';
+    margin: 10px 0; /* Margin for spacing */
 }
 
-dialog input[type = "text"]::placeholder{
-    font-family: 'Kanit';
-}
-
-dialog button:hover {
+dialog button:hover,
+#submit:hover {
     background-color: #1a242f; /* Darker shade on hover */
 }
 
-#submit{
-    padding: 10px; /* Inner spacing for buttons */
-    border: none; /* Remove default border */
-    border-radius: 4px; /* Rounded corners */
-    background-color: #2c3e50; /* Button background color */
-    color: white; /* Button text color */
-    font-size: 16px; /* Font size for buttons */
-    cursor: pointer; /* Pointer on hover */
-    transition: background-color 0.3s; /* Smooth background transition */
-    margin: 10px;
-    font-weight: 700;
-    font-family: 'Kanit';
+/* Placeholder styling */
+dialog input::placeholder {
+    font-family: 'Kanit', sans-serif; /* Ensure placeholder uses the same font */
+    color: #888; /* Light gray color for placeholder text */
 }
 
-#submit:hover{
-    background-color: #1a242f;
+/* Styles for the modal notes and priority select */
+input#notes,
+select#priority,
+input#dueDate {
+    margin-top: 10px; /* Top margin for inputs */
 }
 
-input#notes{
-    padding: 10px; /* Inner spacing for input */
-    margin-bottom: 10px; /* Spacing between input and button */
-    border: 1px solid #ccc; /* Border for input */
-    border-radius: 4px; /* Rounded corners */ 
-    margin: 10px;
-}
-
-select#priority{
-    padding: 10px; /* Inner spacing for input */
-    margin-bottom: 10px; /* Spacing between input and button */
-    border: 1px solid #ccc; /* Border for input */
-    border-radius: 4px; /* Rounded corners */ 
-    margin: 10px;
-}
-
-input#dueDate{
-    padding: 8px; /* Inner spacing for input */
-    margin-bottom: 10px; /* Spacing between input and button */
-    border: 1px solid #ccc; /* Border for input */
-    border-radius: 4px; /* Rounded corners */ 
-    margin: 10px;
-}
-
-h1{
+h1 {
     padding: 8px; /* Inner spacing for input */
     margin-bottom: 10px; 
-    margin: 10px;
+}
+
+.header {
+    display: flex; /* Enable flexbox for the header */
+    justify-content: space-between; /* Push items to the sides */
+    align-items: center; /* Center vertically */
+    padding: 10px 20px; /* Padding for the header */
+    background-color: var(--bg-color); /* Use your existing background color */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow for header */
+}
+
+.welcome-message {
+    margin-left: auto; /* Push the welcome message to the right */
+    font-size: 20px; /* Adjust font size for the message */
+    font-weight: 600; /* Make the welcome message bold */
+}
+
+.add-task-button {
+    background-color: #2ecc71; /* Green color for the button */
+    color: white; /* White text color */
+    padding: 10px 20px; /* Inner spacing for the button */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer on hover */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+.add-task-button:hover {
+    background-color: #27ae60; /* Darker green on hover */
 }

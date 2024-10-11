@@ -1,38 +1,43 @@
-import { modalInput } from "./modal";
-import { List as createElement } from "./createElement.js"; 
-export function updateDom(){
-    let item;
-}
+import { modalInput } from "./modal"; 
+import { createElement } from "./createElement";
 
 const display = document.querySelector('.listArea');
-let theList = []; // Initialize the task list
+
+// Initialize the task list globally
+let theList = [];
+
+// Populate the initial list of tasks
+function initializeList() {
+    theList = [
+        new createElement("touch grass", "touch some of that weird green stuff", "2024-12-26", "high", "hehe"),
+        new createElement("Watch talk tuah podcast", "hawk tuah", "2024-11-16", "high", ""),
+        new createElement("Gyatt to study", "skibidi", "2024-12-26", "high", "hehe im michael jackson"),
+    ];
+}
 
 // Display all items in the list
-function displayList() {
+export function displayList() { // Exported function
     display.innerHTML = ''; // Clear previous items
     for (let i = 0; i < theList.length; i++) {
         appendListToDOM(theList[i]);
     }
 }
 
-
-
 // Append a new item to the DOM
 function appendListToDOM(item) {
     const cards = document.createElement('div');
     cards.classList.add('list-item');
 
-    const deleteIcon = document.createElement('img');
-    deleteIcon.src = './assets/delete.png';
-    deleteIcon.alt = 'Delete';
-    deleteIcon.style.width = '20px'; // Set width if needed
+    const deleteIcon = document.createElement('p');
+    deleteIcon.textContent = 'X' ;
+    deleteIcon.className = "delete";
     deleteIcon.style.cursor = 'pointer'; // Change cursor to pointer for better UX
 
     // Set card content
     cards.innerHTML = `
         <div>Task: ${item.title}</div>
-        <div>Description: ${item.desc}</div>
-        <div>Date: ${item.date}</div>
+        <div>Description: ${item.description}</div>
+        <div>Date: ${item.dueDate.toLocaleDateString()}</div> <!-- Format date -->
         <div>Priority: ${item.priority}</div>
         <div>Notes: ${item.notes}</div>
     `;
@@ -44,30 +49,8 @@ function appendListToDOM(item) {
         deleteItem(item);
     };
 
-    display.appendChild(cards);
+    display.appendChild(cards); // Append the card to the display area
 }
-
-// Event listener for the submit button
-let submit = document.querySelector('#submit');
-submit.addEventListener('click', function addToList(event) {
-    event.preventDefault();
-    
-    // Get values from form fields
-    let title = document.getElementById('title').value;
-    let desc = document.getElementById('desc').value;
-    let date = document.getElementById('date').value;
-    let priority = document.getElementById('priority').value; // Corrected querySelector
-    let notes = document.getElementById('notes').value; // Corrected querySelector
-
-    // Create a new task element
-    let addedElement = new createElement(title, desc, date, priority, notes);
-
-    // Add the task to the list
-    theList.push(addedElement);
-
-    // Update the DOM with the new task
-    appendListToDOM(addedElement);
-});
 
 // Function to delete an item
 function deleteItem(item) {
@@ -77,3 +60,39 @@ function deleteItem(item) {
     // Re-display the list to reflect changes
     displayList();
 }
+
+// Function to handle form submission
+function handleFormSubmission(event) {
+    event.preventDefault();
+
+    // Use modalInput to get new task data
+    let newItem = modalInput();
+
+    // Add the new item to the list
+    theList.push(newItem);
+
+    // Display the updated list
+    displayList();
+
+    // Clear form fields after submission
+    clearFormFields();
+}
+
+// Function to clear form fields
+function clearFormFields() {
+    document.getElementById('title').value = '';
+    document.getElementById('desc').value = '';
+    document.getElementById('dueDate').value = '';
+    document.getElementById('priority').value = '';
+    document.getElementById('notes').value = '';
+}
+
+// Initialize the list and display it
+initializeList();
+displayList();
+
+// Ensure the script runs after the DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    const submit = document.querySelector('#submit');
+    submit.addEventListener('click', handleFormSubmission);
+});
