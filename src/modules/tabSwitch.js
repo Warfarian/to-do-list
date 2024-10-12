@@ -1,145 +1,162 @@
-let activeProject = 'Default Project'; // Keeps track of the active project
+import { createElement } from './createElement';
+import { modalInput } from './modal';
+
+let activeProject = 'Default Project';
 let projects = {
-    'Default Project': [] // Store tasks for each project
+    'Default Project': []
 };
 
-// Create a new project and handle tab switching
 export function createProj() {
-    const sidebar = document.getElementsByClassName('sidebar')[0];
-
-    // Check if the "Add New Project" button exists before creating it
-    let addProj = document.querySelector('.addProjBtn');
+    const sidebar = document.querySelector('.sidebar');
+    let addProj = sidebar.querySelector('.addProjBtn');
     if (!addProj) {
         addProj = document.createElement('button');
         addProj.className = "addProjBtn";
         addProj.textContent = "Add New Project";
         sidebar.appendChild(addProj);
 
-        // Add click event to create a new project tab
         addProj.addEventListener('click', () => {
             const newProjectName = prompt('Enter new project name:');
-            if (newProjectName) {
+            if (newProjectName && !projects[newProjectName]) {
                 addNewProjectTab(newProjectName);
+            } else if (projects[newProjectName]) {
+                alert('Project already exists!');
             }
         });
     }
 }
 
-// Function to add a new project tab and switch to it
 function addNewProjectTab(projectName) {
-    const sidebar = document.getElementsByClassName('sidebar')[0];
-
-    // Create a new project tab in the sidebar
+    const sidebar = document.querySelector('.sidebar');
     let projectTab = document.createElement('li');
     projectTab.textContent = projectName;
     projectTab.classList.add('project-tab');
     
-    // Add the new project to the projects object
-    if (!projects[projectName]) {
-        projects[projectName] = [];
-    }
+    projects[projectName] = [];
 
-    // Add click event to switch between project tabs
-    projectTab.addEventListener('click', () => {
-        switchTab(projectName);
-    });
-
+    projectTab.addEventListener('click', () => switchTab(projectName));
     sidebar.appendChild(projectTab);
-
-    // Automatically switch to the new project tab
     switchTab(projectName);
 }
-
-// Function to switch between project tabs
 function switchTab(projectName) {
-    if (activeProject === projectName) return; // Prevent switching to the same project
+    if (activeProject === projectName) return;
+    
+    // Remove highlight from all tabs
+    const allTabs = document.querySelectorAll('.project-tab');
+    allTabs.forEach(tab => tab.classList.remove('active'));
+
+    // Highlight the current tab
+    const currentTab = Array.from(allTabs).find(tab => tab.textContent === projectName);
+    if (currentTab) {
+        currentTab.classList.add('active');
+    }
 
     activeProject = projectName;
-
-    // Update the display area with tasks for the selected project
+    displayList();
+}
+export function displayList() {
     const display = document.querySelector('.listArea');
-    display.innerHTML = ''; // Clear previous tasks
-
+    display.innerHTML = '';
     let taskHeader = document.createElement('h3');
-    taskHeader.textContent = `Tasks for ${projectName}`;
+    taskHeader.textContent = `Tasks for ${activeProject}`;
     display.appendChild(taskHeader);
 
-    // Display tasks for the active project
-    const tasks = projects[projectName];
-    tasks.forEach(task => appendTaskToDOM(task));
-
-    // Update task form for the current project
-    updateTaskForm();
+    projects[activeProject].forEach(appendListToDOM);
 }
 
-// Function to append a task to the DOM
-function appendTaskToDOM(task) {
+export function appendListToDOM(item) {
     const display = document.querySelector('.listArea');
-    const taskDiv = document.createElement('div');
-    taskDiv.classList.add('list-item');
-
-    taskDiv.innerHTML = `
-        <div>Task: ${task.title}</div>
-        <div>Description: ${task.description}</div>
-        <div>Date: ${task.dueDate}</div>
-        <div>Priority: ${task.priority}</div>
-        <div>Notes: ${task.notes}</div>
+    const card = document.createElement('div');
+    card.classList.add('list-item');
+    card.innerHTML = `
+        <div class="task-title">Task: ${item.title}</div>
+        <div>Description: ${item.description}</div>
+        <div>Date: ${item.dueDate.toLocaleDateString()}</div>
+        <div>Priority: ${item.priority}</div>
+        <div>Notes: ${item.notes}</div>
+        <button class="edit">Edit</button>
+        <button class="delete">X</button>
     `;
 
-    display.appendChild(taskDiv);
+    card.querySelector('.edit').onclick = () => openEditModal(item);
+    card.querySelector('.delete').onclick = () => deleteItem(item);
+
+    display.appendChild(card);
 }
 
-// Handle adding tasks to the active project
-function handleFormSubmission(event) {
+function openEditModal(item) {
+    const fields = ['title', 'desc', 'dueDate', 'priority', 'notes'];
+    fields.forEach(field => {
+        const element = document.getElementById(field);
+        if (element) {
+            element.value = field === 'dueDate' && item[field] instanceof Date 
+                ? item[field].toISOString().split('T')[0] 
+                : item[field];
+        }
+    });
+    window.currentEditingTask = item;
+    document.getElementById('popup').showModal();
+}
+
+export function deleteItem(item) {
+    const index = projects[activeProject].indexOf(item);
+    if (index !== -1) {
+        projects[activeProject].splice(index, 1);
+        displayList();
+    } else {
+        console.error('Item not found in the project list.');
+    }
+}
+
+export function handleFormSubmission(event) {
     event.preventDefault();
+    const newItem = modalInput();
+    if (!newItem) return;
 
-    const title = document.getElementById('title').value;
-    const description = document.getElementById('desc').value;
-    const dueDate = document.getElementById('dueDate').value;
-    const priority = document.getElementById('priority').value;
-    const notes = document.getElementById('notes').value;
-
-    if (!title || !description || !dueDate) {
-        alert('Please fill in all required fields.');
-        return;
+    if (window.currentEditingTask) {
+        Object.assign(window.currentEditingTask, newItem);
+        window.currentEditingTask = null;
+    } else {
+        projects[activeProject].push(new createElement(newItem.title, newItem.description, newItem.dueDate, newItem.priority, newItem.notes));
     }
 
-    const newTask = { title, description, dueDate, priority, notes };
-
-    // Add task to the active project's task list
-    projects[activeProject].push(newTask);
-
-    // Update the display with the new task
-    appendTaskToDOM(newTask);
-
-    // Clear the form fields after submission
-    clearFormFields();
+    displayList();
+    clearFormFields(); // Clear fields after submission
+    document.getElementById('popup').close(); // Close modal after submission
 }
 
-// Function to clear form fields after adding a task
-function clearFormFields() {
-    document.getElementById('title').value = '';
-    document.getElementById('desc').value = '';
-    document.getElementById('dueDate').value = '';
-    document.getElementById('priority').value = '';
-    document.getElementById('notes').value = '';
+export function clearFormFields() {
+    ['title', 'desc', 'dueDate', 'priority', 'notes'].forEach(field => {
+        const element = document.getElementById(field);
+        if (element) element.value = '';
+    });
 }
 
-// Function to update the form for task submission to the current project
-function updateTaskForm() {
-    const submitButton = document.getElementById('submit');
-    submitButton.onclick = handleFormSubmission;
-}
+export function initializeTodoList() {
+    createProj();
+    displayList();
 
-// Initialize the default project and setup the task form
-function initializeDefaultProject() {
-    const defaultProject = document.querySelector('.sidebar ul li');
-    if (defaultProject) {
-        defaultProject.addEventListener('click', () => switchTab('Default Project'));
-    }
+    document.getElementById('submit').addEventListener('click', handleFormSubmission);
+    document.querySelector('.listArea').addEventListener('click', (e) => {
+        if (e.target.classList.contains('edit') || e.target.classList.contains('delete')) {
+            const listItem = e.target.closest('.list-item');
+            if (listItem) {
+                const taskTitleElement = listItem.querySelector('.task-title'); // Adjust this selector as necessary
+                
+                // Check if taskTitleElement exists
+                if (taskTitleElement) {
+                    const taskTitle = taskTitleElement.textContent; // Now it's safe to access textContent
+                    const item = projects[activeProject].find(task => task.title === taskTitle); // Find the corresponding task
+                    
+                    if (e.target.classList.contains('edit')) {
+                        openEditModal(item);
+                    } else if (e.target.classList.contains('delete')) {
+                        deleteItem(item);
+                    }
+                } else {
+                    console.error('Task title element not found.');
+                }
+            }
+        }
+    });
 }
-
-// Ensure the default project is initialized and task form is ready
-initializeDefaultProject();
-createProj();
-updateTaskForm();

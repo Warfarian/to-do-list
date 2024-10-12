@@ -83,12 +83,12 @@ h4 {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow effect */
 }
 
-.delete {
+button.delete {
     background-color: red; /* Red background for delete button */
     font-weight: 900;
     border: none; /* Remove border */
-    width: 30px; /* Adjust width for delete button */
-    height: 30px; /* Adjust height for delete button */
+    width: 40px; /* Adjust width for delete button */
+    height: 40px; /* Adjust height for delete button */
     text-align: center; /* Center text in button */
     color: white; /* Text color for delete button */
     border-radius: 50%; /* Make button circular */
@@ -230,6 +230,7 @@ li{
     padding: 10px 20px; /* Inner spacing for the button */
     border: none; /* Remove border */
     border-radius: 4px; /* Rounded corners */
+    font-size: large;
     cursor: pointer; /* Pointer on hover */
     transition: background-color 0.3s; /* Smooth transition */
     font-family: 'Kanit';
@@ -239,9 +240,25 @@ li{
     background-color: #27ae60; /* Darker green on hover */
 }
 
+button.edit{
+    background-color: #2ecc71; /* Green color for the button */
+    color: white; /* White text color */
+    padding: 10px 20px; /* Inner spacing for the button */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer on hover */
+    transition: background-color 0.3s; /* Smooth transition */
+    font-family: 'Kanit';
+}
+
 #popup {
     position: fixed;
     top: 20%;
     left: 20%;
     width: 400px;
+}
+
+.project-tab.active {
+    background-color: #007bff; /* Change this color as needed */
+    color: white; /* Change text color for better contrast */
 }

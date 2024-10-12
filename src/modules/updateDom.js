@@ -1,153 +1,137 @@
-import { modalInput } from "./modal"; 
-import { createElement } from "./createElement";
-const display = document.querySelector('.listArea');
+// import { modalInput } from "./modal"; 
+// import { createElement } from "./createElement";
 
-// Initialize the task list globally
-let theList = [];
+// const display = document.querySelector('.listArea');
 
-// Populate the initial list of tasks
-export function initializeList() {
-    theList = [
-        new createElement("touch grass", "touch some green", "2024-12-26", "high", "hehe"),
-        new createElement("Gym", "legs", "2024-11-16", "high", ""),
-        new createElement("30 days of swift", "study it", "2024-12-26", "high", "Swift"),
-    ];
-}
+// // Initialize the task list globally
+// let theList = [];
 
-// Display all items in the list
-export function displayList() { // Exported function
-    display.innerHTML = ''; // Clear previous items
-    for (let i = 0; i < theList.length; i++) {
-        appendListToDOM(theList[i]);
-    }
-}
+// // Populate the initial list of tasks
+// export function initializeList() {
+//     theList = [
+//         new createElement("Touch grass", "Touch some green", new Date("2024-12-26"), "high", "hehe"),
+//         new createElement("Gym", "Legs", new Date("2024-11-16"), "high", ""),
+//         new createElement("30 days of Swift", "Study it", new Date("2024-12-26"), "high", "Swift"),
+//     ];
+// }
 
-// Append a new item to the DOM
-export function appendListToDOM(item) {
-    const cards = document.createElement('div');
-    cards.classList.add('list-item');
+// // Display all items in the list
+// export function displayList() {
+//     display.innerHTML = ''; // Clear previous items
+//     theList.forEach(appendListToDOM);
+// }
 
-    const deleteIcon = document.createElement('p');
-    deleteIcon.textContent = 'X' ;
-    deleteIcon.className = "delete";
-    deleteIcon.style.cursor = 'pointer'; // Change cursor to pointer for better UX
+// // Append a new item to the DOM
+// export function appendListToDOM(item) {
+//     const card = document.createElement('div');
+//     card.classList.add('list-item');
 
-    const editIcon = document.createElement('p');
-    editIcon.textContent = "edit";
-    editIcon.className= "edit";
-    editIcon.style.cursor = 'pointer';
+//     const deleteIcon = createIcon('X', 'delete');
+//     const editIcon = createIcon('Edit', 'edit');
 
-    // Set card content
-    cards.innerHTML = `
-        <div>Task: ${item.title}</div>
-        <div>Description: ${item.description}</div>
-        <div>Date: ${item.dueDate.toLocaleDateString()}</div> <!-- Format date -->
-        <div>Priority: ${item.priority}</div>
-        <div>Notes: ${item.notes}</div>
-    `;
+//     card.innerHTML = `
+//         <div>Task: ${item.title}</div>
+//         <div>Description: ${item.description}</div>
+//         <div>Date: ${item.dueDate.toLocaleDateString()}</div>
+//         <div>Priority: ${item.priority}</div>
+//         <div>Notes: ${item.notes}</div>
+//     `;
 
-    cards.appendChild(deleteIcon); // Append delete icon to card
-    cards.appendChild(editIcon);
+//     card.appendChild(deleteIcon);
+//     card.appendChild(editIcon);
 
-    editIcon.onclick = function(){
-        openEditModal(item);
-    }
-    // Add delete functionality
-    deleteIcon.onclick = function() {
-        deleteItem(item);
-    };
+//     editIcon.onclick = () => openEditModal(item);
+//     deleteIcon.onclick = () => deleteItem(item);
 
-    display.appendChild(cards); // Append the card to the display area
-}
-// Function to open the edit modal and populate with task data
+//     display.appendChild(card);
+// }
 
-// Function to open the edit modal and populate it with task data
-function openEditModal(item) {
-    // Fill the form fields with the task details
-    document.getElementById('title').value = item.title;
-    document.getElementById('desc').value = item.description;
-    document.getElementById('dueDate').value = item.dueDate;
-    document.getElementById('priority').value = item.priority;
-    document.getElementById('notes').value = item.notes;
+// function createIcon(text, className) {
+//     const icon = document.createElement('span');
+//     icon.textContent = text;
+//     icon.className = className;
+//     icon.style.cursor = 'pointer';
+//     return icon;
+// }
 
-    // Set the current task being edited
-    currentEditingTask = item; // Store reference to the task being edited
+// let currentEditingTask = null;
 
-    // Show the modal
-    document.getElementById('popup').showModal();
-}
+// function openEditModal(item) {
+//     const fields = ['title', 'desc', 'dueDate', 'priority', 'notes'];
+//     fields.forEach(field => {
+//         const element = document.getElementById(field);
+//         if (element) {
+//             element.value = item[field] instanceof Date 
+//                 ? item[field].toISOString().split('T')[0] 
+//                 : item[field];
+//         }
+//     });
+//     currentEditingTask = item;
+//     const popup = document.getElementById('popup');
+//     if (popup) {
+//         popup.showModal();
+//     }
+// }
 
+// export function deleteItem(item) {
+//     theList = theList.filter(listItem => listItem !== item);
+//     displayList();
+// }
 
+// function handleFormSubmission(event) {
+//     event.preventDefault();
+//     const newItem = modalInput();
+//     if (!newItem) return;
 
-// Function to delete an item
-export function deleteItem(item) {
-    // Remove the item from the list
-    theList = theList.filter(listItem => listItem !== item);
-    
-    // Re-display the list to reflect changes
-    displayList();
-}
+//     if (currentEditingTask) {
+//         Object.assign(currentEditingTask, newItem);
+//         currentEditingTask = null;
+//     } else {
+//         theList.push(new createElement(newItem.title, newItem.description, newItem.dueDate, newItem.priority, newItem.notes));
+//     }
 
-let currentEditingTask = null; // To store the current task being edited
+//     displayList();
+//     clearFormFields();
+//     const popup = document.getElementById('popup');
+//     if (popup) {
+//         popup.close();
+//     }
+// }
 
-function handleFormSubmission(event) {
-    event.preventDefault();
+// export function clearFormFields() {
+//     ['title', 'desc', 'dueDate', 'priority', 'notes'].forEach(field => {
+//         const element = document.getElementById(field);
+//         if (element) {
+//             element.value = '';
+//         }
+//     });
+// }
 
-    // Get the new task data from the modal
-    const newItem = modalInput();
+// // Initialize the list and display it
+// initializeList();
+// displayList();
 
-    // If the date is invalid or the newItem is null, exit the function
-    if (!newItem) {
-        return; // Stop form submission if newItem is null
-    }
+// // Ensure the script runs after the DOM is loaded
+// document.addEventListener('DOMContentLoaded', () => {
+//     const submitButton = document.querySelector('#submit');
+//     if (submitButton) {
+//         submitButton.addEventListener('click', handleFormSubmission);
+//     }
 
-    // If we're editing an existing task
-    if (currentEditingTask) {
-        // Update existing task properties
-        currentEditingTask.title = newItem.title;
-        currentEditingTask.description = newItem.description;
-        currentEditingTask.dueDate = newItem.dueDate; // Valid Date object
-        currentEditingTask.priority = newItem.priority;
-        currentEditingTask.notes = newItem.notes;
-
-        // Reset the editing task variable
-        currentEditingTask = null; 
-    } else {
-        // Add the new item to the list
-        theList.push(new createElement(newItem.title, newItem.description, newItem.dueDate, newItem.priority, newItem.notes));
-    }
-
-    // Display the updated list
-    displayList();
-
-    // Clear form fields after submission
-    clearFormFields();
-
-    // Close the modal after submission
-    document.getElementById('popup').close();
-}
-
-
-
-
-// Function to clear form fields
-export function clearFormFields() {
-    document.getElementById('title').value = '';
-    document.getElementById('desc').value = '';
-    document.getElementById('dueDate').value = '';
-    document.getElementById('priority').value = '';
-    document.getElementById('notes').value = '';
-}
-
-// Initialize the list and display it
-initializeList();
-displayList();
-
-// Ensure the script runs after the DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    const submit = document.querySelector('#submit');
-    submit.addEventListener('click', handleFormSubmission);
-});
-
-
-
+//     // Add event listeners for edit and delete buttons on existing tasks
+//     document.addEventListener('click', (e) => {
+//         if (e.target.classList.contains('edit')) {
+//             const listItem = e.target.closest('.list-item');
+//             if (listItem) {
+//                 const index = Array.from(listItem.parentNode.children).indexOf(listItem);
+//                 openEditModal(theList[index]);
+//             }
+//         } else if (e.target.classList.contains('delete')) {
+//             const listItem = e.target.closest('.list-item');
+//             if (listItem) {
+//                 const index = Array.from(listItem.parentNode.children).indexOf(listItem);
+//                 deleteItem(theList[index]);
+//             }
+//         }
+//     });
+// });
