@@ -17,7 +17,6 @@ export function displayModal() {
 
 
 
-
 // Corrected window.onload syntax
 window.onload = () => {
     displayModal();

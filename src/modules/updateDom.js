@@ -90,23 +90,23 @@ export function deleteItem(item) {
 
 let currentEditingTask = null; // To store the current task being edited
 
-// Function to handle form submission
-// Function to handle form submission
 function handleFormSubmission(event) {
     event.preventDefault();
 
-    // Use modalInput to get new task data
-    let newItem = modalInput();
+    // Get the new task data from the modal
+    const newItem = modalInput();
 
-    // Check if we are editing an existing task
+    // If the date is invalid or the newItem is null, exit the function
+    if (!newItem) {
+        return; // Stop form submission if newItem is null
+    }
+
+    // If we're editing an existing task
     if (currentEditingTask) {
         // Update existing task properties
         currentEditingTask.title = newItem.title;
         currentEditingTask.description = newItem.description;
-        currentEditingTask.dueDate = newItem.dueDate;
-        if (!currentEditingTask.dueDate){
-            console.error('enter valid date');
-        }
+        currentEditingTask.dueDate = newItem.dueDate; // Valid Date object
         currentEditingTask.priority = newItem.priority;
         currentEditingTask.notes = newItem.notes;
 
@@ -114,7 +114,7 @@ function handleFormSubmission(event) {
         currentEditingTask = null; 
     } else {
         // Add the new item to the list
-        theList.push(newItem);
+        theList.push(new createElement(newItem.title, newItem.description, newItem.dueDate, newItem.priority, newItem.notes));
     }
 
     // Display the updated list
@@ -122,10 +122,11 @@ function handleFormSubmission(event) {
 
     // Clear form fields after submission
     clearFormFields();
-    
+
     // Close the modal after submission
     document.getElementById('popup').close();
 }
+
 
 
 

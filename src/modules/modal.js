@@ -1,20 +1,18 @@
-import { createElement } from "./createElement";
-
 export function modalInput() {
-    let title = document.getElementById('title').value;
-    let desc = document.getElementById('desc').value;
-    let priority = document.getElementById('priority').value;
-    let dueDate = document.getElementById('dueDate').value;
-    let notes = document.getElementById('notes').value;
+    const dueDateInput = document.getElementById('dueDate').value;
+    const dueDate = new Date(dueDateInput);
 
-    // Check if dueDate is valid before creating the element
-    const date = new Date(dueDate);
-    if (isNaN(date)) {
+    // Check if the dueDate is valid
+    if (isNaN(dueDate.getTime())) {
         alert("Please enter a valid date.");
         return null; // Return null if the date is invalid
     }
 
-    let newItem = new createElement(title, desc, date, priority, notes);
-    
-    return newItem;
+    return {
+        title: document.getElementById('title').value,
+        description: document.getElementById('desc').value,
+        dueDate: dueDate, // Store the Date object
+        priority: document.getElementById('priority').value,
+        notes: document.getElementById('notes').value,
+    };
 }

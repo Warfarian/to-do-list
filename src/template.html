@@ -13,9 +13,9 @@
         <div class="sidebar">
             <h4>Your Projects</h4>
             <div class="projectList">
-                <!-- <button class="projectBtn">Home</button>
-                <button class="projectBtn">Work</button>
-                <button class="projectBtn">Productivity</button> -->
+                <ul id="projectTabs">
+                    <li id="defaultTab" class="tab active">Untitled</li>
+                </ul>
             </div>
         </div> 
         <div class="content"> <!-- A new container for the header and list area -->
@@ -29,10 +29,12 @@
             </div>
         </div>
         <dialog id="popup">
-            <h1>Hi!</h1>
+            <div class="dialog-header">
+                <h1>Hi!</h1>
+            </div>
             <form method="dialog">
                 <label for="title">Task: </label>
-                <input type="text" name="title" id="title" placeholder="Walk my dawg">
+                <input type="text" name="title" id="title" placeholder="Walk my dog">
                 <label for="desc">Description: </label>
                 <input type="text" name="desc" id="desc" placeholder="Walk around the park">
                 <label for="priority">Priority level: </label>
@@ -49,6 +51,35 @@
                 <button type="button" onclick="document.getElementById('popup').close();">Cancel</button>   
             </form>
         </dialog>
+        
     </div>
+    <script>const dialog = document.getElementById('popup');
+const header = document.querySelector('.dialog-header');
+
+// Variables for tracking drag state
+let isDragging = false;
+let offsetX = 0;
+let offsetY = 0;
+
+// Function to start dragging
+header.addEventListener('mousedown', function(e) {
+    isDragging = true;
+    offsetX = e.clientX - dialog.offsetLeft;
+    offsetY = e.clientY - dialog.offsetTop;
+});
+
+// Function to handle dragging
+document.addEventListener('mousemove', function(e) {
+    if (isDragging) {
+        dialog.style.left = (e.clientX - offsetX) + 'px';
+        dialog.style.top = (e.clientY - offsetY) + 'px';
+    }
+});
+
+// Function to stop dragging
+document.addEventListener('mouseup', function() {
+    isDragging = false;
+});
+</script>
 </body>
 </html>
