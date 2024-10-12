@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600&display=swap" rel="stylesheet">
+<script defer src="main.js"></script></head>
+<body>
+    <div class="wrapper">
+        <div class="sidebar">
+            <h4>Your Projects</h4>
+            <div class="projectList">
+                <ul id="projectTabs">
+                </ul>
+            </div>
+        </div> 
+        <div class="content"> <!-- A new container for the header and list area -->
+            <div class="header">
+                <h1>To-Do List</h1>
+                <button class="add-task-button">Add Task</button>
+                <span class="welcome-message">Welcome, User!</span>
+            </div>
+            <div class="listArea"> 
+                <!-- this is where we're adding stuff to dom -->
+            </div>
+        </div>
+        <dialog id="popup">
+            <div class="dialog-header">
+                <h1>Hi!</h1>
+            </div>
+            <form method="dialog">
+                <label for="title">Task: </label>
+                <input type="text" name="title" id="title" placeholder="Walk my dog">
+                <label for="desc">Description: </label>
+                <input type="text" name="desc" id="desc" placeholder="Walk around the park">
+                <label for="priority">Priority level: </label>
+                <select name="priority" id="priority">
+                    <option value="Urgent">Urgent</option>
+                    <option value="High">High</option>
+                    <option value="Low">Low</option>
+                </select>
+                <label for="dueDate">Due-Date: </label>
+                <input type="date" name="dueDate" id="dueDate">
+                <label for="notes">Notes: </label>
+                <textarea name="notes" id="notes"></textarea>
+                <input type="submit" name="submit" id="submit">
+                <button type="button" onclick="document.getElementById('popup').close();">Cancel</button>   
+            </form>
+        </dialog>
+        
+    </div>
+    <script>const dialog = document.getElementById('popup');
+const header = document.querySelector('.dialog-header');
+
+// Variables for tracking drag state
+let isDragging = false;
+let offsetX = 0;
+let offsetY = 0;
+
+// Function to start dragging
+header.addEventListener('mousedown', function(e) {
+    isDragging = true;
+    offsetX = e.clientX - dialog.offsetLeft;
+    offsetY = e.clientY - dialog.offsetTop;
+});
+
+// Function to handle dragging
+document.addEventListener('mousemove', function(e) {
+    if (isDragging) {
+        dialog.style.left = (e.clientX - offsetX) + 'px';
+        dialog.style.top = (e.clientY - offsetY) + 'px';
+    }
+});
+
+// Function to stop dragging
+document.addEventListener('mouseup', function() {
+    isDragging = false;
+});
+</script>
+</body>
+</html>
