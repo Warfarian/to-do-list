@@ -44,20 +44,27 @@ h4 {
     margin-bottom: 20px; /* Space below heading */
 }
 
-ul {
-    list-style-type: none; /* Remove bullet points */
-}
-
-li {
+.projectBtn {
+    border: 0;
+    background: none;
+    padding: 0;
+    font-family: 'Kanit';
+    outline: inherit;
+    font-size: larger;
     cursor: pointer;
     margin-bottom: 10px; /* Space between items */
     transition: color 0.3s; /* Smooth color transition on hover */
 }
 
-li:hover {
+.projectBtn:hover {
     color: var(--accent-color); /* Change color on hover */
 }
 
+.projectList{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 .listArea {
     position: relative;
     top: 150px; /* Adjust position based on sidebar */
@@ -163,6 +170,7 @@ h1 {
 .header {
     display: flex; /* Enable flexbox for the header */
     justify-content: space-between; /* Push items to the sides */
+    width: 1250px;
     align-items: center; /* Center vertically */
     padding: 10px 20px; /* Padding for the header */
     background-color: var(--bg-color); /* Use your existing background color */
@@ -176,6 +184,7 @@ h1 {
 }
 
 .add-task-button {
+    font-family: 'Kanit';
     background-color: #2ecc71; /* Green color for the button */
     color: white; /* White text color */
     padding: 10px 20px; /* Inner spacing for the button */
@@ -186,5 +195,20 @@ h1 {
 }
 
 .add-task-button:hover {
+    background-color: #27ae60; /* Darker green on hover */
+}
+
+.addProjBtn{
+    background-color: #2ecc71; /* Green color for the button */
+    color: white; /* White text color */
+    padding: 10px 20px; /* Inner spacing for the button */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer on hover */
+    transition: background-color 0.3s; /* Smooth transition */
+    font-family: 'Kanit';
+}
+
+.addProjBtn:hover {
     background-color: #27ae60; /* Darker green on hover */
 }
